@@ -60,9 +60,7 @@ private:
 
 	void readThread( void ) {
 		while ( 1 ) {
-			//std::array< char, 2048 > buf;
 			boost::system::error_code error;
-			//auto len = m_socket.read_some( boost::asio::buffer( buf, buf.size( ) ), error );
 
 			boost::asio::streambuf buff;
 			boost::asio::read_until( m_socket, buff, "\\dxme", error );

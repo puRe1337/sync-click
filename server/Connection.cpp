@@ -7,6 +7,7 @@ void Connection::start( ) {
 	read( );
 	m_endpoint = m_socket.remote_endpoint( );
 	m_connections.add( shared_from_this( ) );
+	m_connections.write( fmt::format( "Connected clients: {}", m_connections.connected_clients( ) ) );
 }
 
 void Connection::read( ) {
@@ -37,10 +38,7 @@ void Connection::handle_read( const boost::system::error_code& ec, std::size_t l
 				READ(msg, eMessages, type);
 
 				if ( type == eMessages::SendClick ) {
-
-					for ( auto& c : m_connections.connections( ) ) {
-						c->write( msg );
-					}
+					m_connections.write( msg );
 				}
 				else if ( type == eMessages::Message ) {
 					READ(msg, std::string, text);
@@ -52,9 +50,10 @@ void Connection::handle_read( const boost::system::error_code& ec, std::size_t l
 		}
 		else {
 			if ( m_socket.is_open( ) ) {
-				m_connections.remove( shared_from_this( ) );
 				auto rmtIp = m_endpoint;
 				fmt::print( "Client disconnected ( {} ) - {}\n", ec.message( ), boost::lexical_cast< std::string >( rmtIp ) );
+				m_connections.remove( shared_from_this( ) );
+				m_connections.write( fmt::format( "Connected clients: {}", m_connections.connected_clients( ) ) );
 				m_socket.close( );
 			}
 		}
@@ -63,6 +62,7 @@ void Connection::handle_read( const boost::system::error_code& ec, std::size_t l
 		auto rmtIp = m_endpoint;
 		fmt::print( "Client kicked ( {} ) - {}\n", e.what( ), boost::lexical_cast< std::string >( rmtIp ) );
 		m_connections.remove( shared_from_this( ) );
+		m_connections.write( fmt::format( "Connected clients: {}", m_connections.connected_clients( ) ) );
 		m_socket.shutdown( boost::asio::socket_base::shutdown_both );
 		m_socket.close( );
 	}
@@ -80,10 +80,10 @@ void Connection::do_write( ) {
 void Connection::handle_write( const boost::system::error_code& ec, std::size_t length ) {
 	if ( ec ) {
 		if ( m_socket.is_open( ) ) {
-			m_connections.remove( shared_from_this( ) );
 			auto rmtIp = m_endpoint;
-
 			fmt::print( "Client disconnected ( {} ) - {}\n", ec.message( ), boost::lexical_cast< std::string >( rmtIp ) );
+			m_connections.remove( shared_from_this( ) );
+			m_connections.write( fmt::format( "Connected clients: {}", m_connections.connected_clients( ) ) );
 			m_socket.close( );
 		}
 	}
