@@ -52,6 +52,13 @@ public:
 		m_socket.write_some( boost::asio::buffer( strData ) );
 	}
 
+	void write( const std::string& text ) {
+		CMessage msg;
+		WRITE(msg, eMessages::Message);
+		WRITE(msg, text);
+		write( msg );
+	}
+
 private:
 	void startRead( void ) {
 		std::thread reader( &Client::readThread, this );

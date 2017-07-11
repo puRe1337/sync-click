@@ -43,6 +43,7 @@ void Connection::handle_read( const boost::system::error_code& ec, std::size_t l
 				else if ( type == eMessages::Message ) {
 					READ(msg, std::string, text);
 					fmt::print( "<{}>: {}\n", boost::lexical_cast< std::string >( m_socket.remote_endpoint( ) ), text );
+					m_connections.write( text );
 				}
 
 				read( );
