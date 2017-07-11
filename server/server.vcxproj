@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{9E85DAF4-AA15-43ED-9929-3EF3D1D33714}</ProjectGuid>
+    <ProjectGuid>{E5F48F8B-55AE-4D69-8EE0-0E224D8D6D5B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>syncclick</RootNamespace>
+    <RootNamespace>server</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -37,7 +37,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -78,6 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(BOOST);$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -115,6 +117,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,6 +144,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Visual Studio 2015\Projects\zer0Recoil-Server\zer0Recoil-Server\fmt\format.cc" />
+    <ClCompile Include="..\..\..\..\Visual Studio 2015\Projects\zer0Recoil-Server\zer0Recoil-Server\fmt\ostream.cc" />
+    <ClCompile Include="..\..\..\..\Visual Studio 2015\Projects\zer0Recoil-Server\zer0Recoil-Server\fmt\posix.cc" />
+    <ClCompile Include="Connection.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Visual Studio 2015\Projects\zer0Recoil-Server\zer0Recoil-Server\fmt\format.h" />
+    <ClInclude Include="..\..\..\..\Visual Studio 2015\Projects\zer0Recoil-Server\zer0Recoil-Server\fmt\ostream.h" />
+    <ClInclude Include="..\..\..\..\Visual Studio 2015\Projects\zer0Recoil-Server\zer0Recoil-Server\fmt\posix.h" />
+    <ClInclude Include="..\..\..\..\Visual Studio 2015\Projects\zer0Recoil-Server\zer0Recoil-Server\fmt\time.h" />
+    <ClInclude Include="CMessage.hpp" />
+    <ClInclude Include="Connection.hpp" />
+    <ClInclude Include="Connections.hpp" />
+    <ClInclude Include="Server.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
