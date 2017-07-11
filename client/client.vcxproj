@@ -149,6 +149,10 @@
   <ItemGroup>
     <ClInclude Include="Client.hpp" />
     <ClInclude Include="CMessage.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="client.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
