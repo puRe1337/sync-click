@@ -11,8 +11,14 @@
 enum class eMessages : int
 {
 	Message = 1,
-	SendClick
+	SendClick,
+	Ping,
+	VersionInfo
 };
+
+namespace VersionInfo {
+	static constexpr float version = 0.5;
+}
 
 #define READ(MSG, TYPE, VARNAME) TYPE VARNAME; MSG >> VARNAME;
 #define WRITE(MSG, VAR) MSG << VAR;
