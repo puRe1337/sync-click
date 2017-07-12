@@ -10,7 +10,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include "CMessage.hpp"
+#include "../Shared/CMessage.hpp"
 #include "fmt/format.h"
 
 class Server;
@@ -38,6 +38,9 @@ private:
 
 	void handle_write( const boost::system::error_code& ec, std::size_t length );
 
+	bool accepted( ) const;
+
+	bool m_accepted;
 	boost::asio::ip::tcp::socket m_socket;
 	boost::asio::ip::tcp::endpoint m_endpoint;
 	std::deque< std::string > m_message_queue;

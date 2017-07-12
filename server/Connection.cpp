@@ -1,7 +1,7 @@
 #include "Connection.hpp"
 #include "Connections.hpp"
 
-Connection::Connection( boost::asio::io_service& io, Connections& s ) : m_socket( io ), m_connections( s ) {}
+Connection::Connection( boost::asio::io_service& io, Connections& s ) : m_socket( io ), m_connections( s ), m_accepted( false ) {}
 
 void Connection::start( ) {
 	read( );
@@ -38,12 +38,24 @@ void Connection::handle_read( const boost::system::error_code& ec, std::size_t l
 				READ(msg, eMessages, type);
 
 				if ( type == eMessages::SendClick ) {
+					if ( !accepted( ) )
+						return;
 					m_connections.write( msg );
 				}
 				else if ( type == eMessages::Message ) {
 					READ(msg, std::string, text);
 					fmt::print( "<{}>: {}\n", boost::lexical_cast< std::string >( m_socket.remote_endpoint( ) ), text );
 					m_connections.write( text );
+				}
+				else if ( type == eMessages::Ping ) {
+					CMessage o_msg;
+					WRITE(o_msg, eMessages::Ping);
+					write( o_msg );
+				}
+				else if ( type == eMessages::VersionInfo ) {
+					READ(msg, float, version);
+					if ( version == VersionInfo::version )
+						m_accepted = true;
 				}
 
 				read( );
@@ -95,4 +107,8 @@ void Connection::handle_write( const boost::system::error_code& ec, std::size_t 
 			do_write( );
 		}
 	}
+}
+
+bool Connection::accepted( ) const {
+	return m_accepted;
 }

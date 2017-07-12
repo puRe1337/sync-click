@@ -6,7 +6,7 @@
 #include <boost/asio.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include "CMessage.hpp"
+#include "../Shared/CMessage.hpp"
 #include <iostream>
 #include <thread>
 
@@ -100,6 +100,12 @@ private:
 				Beep( 300, 300 );
 			} ).detach( );
 				mouse_event( MOUSEEVENTF_LEFTUP, 0, 0, 0, 0 );
+			}
+			else if ( type == eMessages::VersionInfo ) {
+				CMessage o_msg;
+				WRITE(o_msg, eMessages::VersionInfo);
+				WRITE(o_msg, VersionInfo::version);
+				write( o_msg );
 			}
 		}
 	}
